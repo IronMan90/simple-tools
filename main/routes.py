@@ -15,9 +15,10 @@ date_time = datetime.datetime.today().strftime("%M-%S-%f")
 
 
 class Results:
-    def __init__(self, test, vcf_):
+    def __init__(self, test, vcf_, serials_):
         self.test = test
         self.vcf_ = vcf_
+        self.serials_ = serials_
 
     def get_test(self):
         return self.test
@@ -31,8 +32,14 @@ class Results:
     def set_vcf(self, vcf_):
         self.vcf_ = vcf_
 
+    def get_serials(self):
+        return self.serials_
 
-p = Results('', '')
+    def set_serials(self, serials_):
+        self.serials_ = serials_
+
+
+p = Results('', '', '')
 faker = faker.Faker(['it_IT', 'en_US', 'ja_JP'])
 
 
@@ -47,6 +54,13 @@ def generate_full_name():
     return fake.name()
 
 
+def randstr():
+    randomstr = ''
+    for i in range(0, 10):
+        randomstr += random.choice(string.ascii_uppercase)
+    return randomstr
+
+
 def generate_local_users(number, domain='example.com'):
     local_users = ''
     for i in range(0, number):
@@ -57,13 +71,6 @@ def generate_local_users(number, domain='example.com'):
         local_users += email + ';' + names[0] + ';' + names[1] + ';' + nickname + '\n'
     p.set_test(local_users)
     return local_users[:-1]
-
-
-def randstr():
-    randomstr = ''
-    for i in range(0, 10):
-        randomstr += random.choice(string.ascii_uppercase)
-    return randomstr
 
 
 def generate_vcf(number):
@@ -83,6 +90,15 @@ def generate_vcf(number):
     return contacts
 
 
+def generate_devices_serial_number(number):
+    serials = ''
+    for i in range(0, number):
+        r = random.randrange(1, 1000)
+        serials += f'{randstr()[1:3]}{r // 2}{randstr()[4:7]}{r}-example\n'
+    p.set_serials(serials)
+    return serials[:-1]
+
+
 @app.route('/')
 def home():
     form = UsersForm()
@@ -95,8 +111,9 @@ def home():
 def results():
     t = p.get_test()
     result_vcf = p.get_vcf()
+    result_serials = p.get_serials()
     # save_to_file(result_vcf, date_time, 'vcf')
-    return render_template('users.html', t=t, result_vcf=result_vcf)
+    return render_template('users.html', t=t, result_vcf=result_vcf, result_serials=result_serials)
 
 
 @app.route('/generate_users', methods=['GET', 'POST'])
@@ -121,5 +138,6 @@ def vcf():
 def serials():
     serials_form = SerialsForm()
     if serials_form.validate_on_submit():
-        return redirect(url_for('home'))
+        generate_devices_serial_number(serials_form.count.data)
+        return redirect(url_for('results'))
     return render_template('home.html', serials_form=serials_form)
