@@ -16,7 +16,8 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="users-tab">
-
+        <a class="btn btn-success" href="{{ url_for('users_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('home') }}"> Back to home</a>
         <form>
             <div class="form-group">
                 <label for="usersTextarea">Results users</label>
@@ -26,20 +27,26 @@
 
     </div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="vcf-tab">
+        <a class="btn btn-success" href="{{ url_for('contacts_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('home') }}"> Back to home</a>
         <form>
             <div class="form-group">
                 <label for="contactTextarea">Results contacts</label>
                 <textarea class="form-control" id="contactTextarea" rows="3" cols="10"> {{ result_vcf }}</textarea>
             </div>
+
         </form>
 
     </div>
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="serials-tab">
+        <a class="btn btn-success" href="{{ url_for('contacts_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('home') }}"> Back to home</a>
         <form>
             <div class="form-group">
                 <label for="serialsTextarea">Results serials</label>
                 <textarea class="form-control" id="serialsTextarea" rows="3" cols="10">{{ result_serials }}</textarea>
             </div>
+
         </form>
     </div>
 </div>
