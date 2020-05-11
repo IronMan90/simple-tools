@@ -3,9 +3,9 @@ import string
 import os
 import glob
 import datetime
-
+import pyperclip
 import faker
-from flask import render_template, url_for, redirect, send_file
+from flask import render_template, url_for, redirect, send_file, request, flash
 from main import app
 from main.forms import UsersForm, VcfForm, SerialsForm
 
@@ -15,16 +15,16 @@ date_time = datetime.datetime.today().strftime("%M-%S-%f")
 
 
 class Results:
-    def __init__(self, test, vcf_, serials_):
-        self.test = test
+    def __init__(self, users_, vcf_, serials_):
+        self.users = users_
         self.vcf_ = vcf_
         self.serials_ = serials_
 
-    def get_test(self):
-        return self.test
+    def get_users(self):
+        return self.users
 
-    def set_test(self, test):
-        self.test = test
+    def set_users(self, users_):
+        self.users = users_
 
     def get_vcf(self):
         return self.vcf_
@@ -69,7 +69,7 @@ def generate_local_users(number, domain='example.com'):
         email = f'{names[0].lower()}.{names[1].lower()}@{domain}'
         nickname = f'{names[0][0].lower()}{names[1].lower()}'
         local_users += email + ';' + names[0] + ';' + names[1] + ';' + nickname + '\n'
-    p.set_test(local_users)
+    p.set_users(local_users)
     return local_users[:-1]
 
 
@@ -99,6 +99,24 @@ def generate_devices_serial_number(number):
     return serials[:-1]
 
 
+@app.route('/users_copy_to_clipboard')
+def users_copy_to_clipboard():
+    pyperclip.copy(p.get_users())
+    return redirect(url_for('results'))
+
+
+@app.route('/serials_copy_to_clipboard')
+def serials_copy_to_clipboard():
+    pyperclip.copy(p.get_serials())
+    return redirect(url_for('results'))
+
+
+@app.route('/contacts_copy_to_clipboard')
+def contacts_copy_to_clipboard():
+    pyperclip.copy(p.get_vcf())
+    return render_template("results")
+
+
 @app.route('/')
 def home():
     form = UsersForm()
@@ -109,7 +127,7 @@ def home():
 
 @app.route('/results')
 def results():
-    t = p.get_test()
+    t = p.get_users()
     result_vcf = p.get_vcf()
     result_serials = p.get_serials()
     # save_to_file(result_vcf, date_time, 'vcf')
