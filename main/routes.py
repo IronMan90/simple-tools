@@ -44,6 +44,7 @@ faker = faker.Faker(['it_IT', 'en_US', 'ja_JP'])
 
 
 def save_to_file(function, filename, extension="csv"):
+    os.remove(os.getcwd() + '/' + os.path.join('main/static') + '/' + filename + '.' + extension)
     with open(os.getcwd() + '/' + os.path.join('main/static') + '/' + filename + '.' + extension, 'w',
               encoding="utf-8") as file:
         file.write(f'{function}')
@@ -105,16 +106,34 @@ def users_copy_to_clipboard():
     return redirect(url_for('results'))
 
 
+@app.route('/users_save_file')
+def users_save_file():
+    save_to_file(p.get_users(), "users")
+    return redirect(url_for('results'))
+
+
 @app.route('/serials_copy_to_clipboard')
 def serials_copy_to_clipboard():
     pyperclip.copy(p.get_serials())
     return redirect(url_for('results'))
 
 
+@app.route('/serials_save_file')
+def serials_save_file():
+    save_to_file(p.get_serials(), "serials")
+    return redirect(url_for('results'))
+
+
 @app.route('/contacts_copy_to_clipboard')
 def contacts_copy_to_clipboard():
     pyperclip.copy(p.get_vcf())
-    return render_template("results")
+    return redirect(url_for('results'))
+
+
+@app.route('/contacts_save_file')
+def contacts_save_file():
+    save_to_file(p.get_vcf(), "contacts", 'vcf')
+    return redirect(url_for('results'))
 
 
 @app.route('/')
@@ -125,12 +144,11 @@ def home():
     return render_template('home.html', form=form, vcf_form=vcf_form, serials_form=serials_form)
 
 
-@app.route('/results')
+@app.route('/results', methods=['GET', 'POST'])
 def results():
     t = p.get_users()
     result_vcf = p.get_vcf()
     result_serials = p.get_serials()
-    # save_to_file(result_vcf, date_time, 'vcf')
     return render_template('users.html', t=t, result_vcf=result_vcf, result_serials=result_serials)
 
 
