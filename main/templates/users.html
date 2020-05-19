@@ -16,35 +16,39 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="users-tab">
-        <a class="btn btn-success" href="{{ url_for('users_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('users_copy_to_clipboard') }}">Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('users_save_file') }}">Save users file</a>
         <a class="btn btn-success" href="{{ url_for('home') }}"> Back to home</a>
+    </form>
         <form>
             <div class="form-group">
                 <label for="usersTextarea">Results users</label>
-                <textarea class="form-control" id="usersTextarea" rows="3" cols="10">{{ t }}</textarea>
+                <textarea class="form-control" id="usersTextarea" rows="30" cols="10">{{ t }}</textarea>
             </div>
         </form>
 
     </div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="vcf-tab">
-        <a class="btn btn-success" href="{{ url_for('contacts_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('contacts_copy_to_clipboard') }}">Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('contacts_save_file') }}">Save contacts file</a>
         <a class="btn btn-success" href="{{ url_for('home') }}"> Back to home</a>
         <form>
             <div class="form-group">
                 <label for="contactTextarea">Results contacts</label>
-                <textarea class="form-control" id="contactTextarea" rows="3" cols="10"> {{ result_vcf }}</textarea>
+                <textarea class="form-control" id="contactTextarea" rows="30" cols="10"> {{ result_vcf }}</textarea>
             </div>
 
         </form>
 
     </div>
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="serials-tab">
-        <a class="btn btn-success" href="{{ url_for('contacts_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('serials_copy_to_clipboard') }}"> Copy to clipboard</a>
+        <a class="btn btn-success" href="{{ url_for('serials_save_file') }}">Save serials file</a>
         <a class="btn btn-success" href="{{ url_for('home') }}"> Back to home</a>
         <form>
             <div class="form-group">
                 <label for="serialsTextarea">Results serials</label>
-                <textarea class="form-control" id="serialsTextarea" rows="3" cols="10">{{ result_serials }}</textarea>
+                <textarea class="form-control" id="serialsTextarea" rows="30" cols="10">{{ result_serials }}</textarea>
             </div>
 
         </form>
