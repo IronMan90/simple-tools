@@ -34,5 +34,7 @@ venv/*
 *png
 *.pyc
 *txt
+*vcf
+*csv
 __pycache__/
 *.py[cod]
