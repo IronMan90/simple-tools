@@ -111,7 +111,7 @@ def users_save_file():
     save_to_file(p.get_users(), "users")
     return redirect(url_for('results'))
 
-
+  
 @app.route('/serials_copy_to_clipboard')
 def serials_copy_to_clipboard():
     pyperclip.copy(p.get_serials())
@@ -128,7 +128,7 @@ def serials_save_file():
 def contacts_copy_to_clipboard():
     pyperclip.copy(p.get_vcf())
     return redirect(url_for('results'))
-
+  
 
 @app.route('/contacts_save_file')
 def contacts_save_file():
